@@ -9,10 +9,10 @@ def cmd_ajout(l):
     liste.append(t)
 
 def cmd_liste(l):
+    print("Prénom     |  Nage       |  Longueur")
+    print("---------------------------------")
     for elt in l:
-        print("nom :",elt[0])
-        print("nage : ",elt[1])
-        print("longueur : ",elt[2])
+        print(f"{elt[0]:11}|  {elt[1]:8}|  {elt[2]}")
 
 def cmd_exit():
     tmp = input("En êtes-vous sûr ? (o)oui / (n) non :")
