@@ -33,22 +33,43 @@ def cmd_nage(liste):
     for elt in liste:
          if elt[1] == nage:
             print(f"{elt[0]:11}|  {elt[2]}")
-     
+def cmd_save(liste, filename):
+    fichier = open("save.csv","w")
+    for elt in liste:
+        fichier.write(elt[0]+','+elt[1]+','+str(elt[2])+"\n")
+    fichier.close()
+def cmd_load(liste, filename):
+    fichier = open('save.csv', 'r')
+    for line in fichier:
+        line.strip()
+        if line[-1] == '\n':
+            line = line[:-1]
+        if line[0]=='#':
+            continue
+        tmp = line.split(',')
+        liste.append(tuple(tmp))
+    fichier.close()
 exit = True
 while exit:
-    cmd = input("que faut t-il faire ?(ajout,liste,nageur,nage ou exit) :")
+    cmd = input("que faut t-il faire ?(ajout,liste,nageur,nage,save,load ou exit) :")
     if cmd == "ajout":
         cmd_ajout(liste)
         continue
     if cmd == "liste":
-            cmd_liste(liste)
-            continue
+        cmd_liste(liste)
+        continue
     if cmd == "nageur":
-            cmd_nageur(liste)
-            continue
+        cmd_nageur(liste)
+        continue
     if cmd == "nage":
-            cmd_nage(liste)
-            continue
+        cmd_nage(liste)
+        continue
+    if cmd == "save":
+        cmd_save(liste, "save.csv")
+        continue
+    if cmd == "load":
+        cmd_load(liste, "save.csv")
+        continue
     if cmd == "exit":
         exit = cmd_exit()
         continue
