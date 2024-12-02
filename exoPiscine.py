@@ -1,45 +1,58 @@
-liste = [("Nathan","Crawl",20),("Nathan","Brasse",12),("Jacque","Dos",10),("Paul","Brasse",4)]
-cmd = ""
+liste = [("Jacque","Crawl",19),("Paul","Brasse",13),("Nathan","Dos",4), ("Nathan","Brasse",8) ]
+commande = ''
 
 def cmd_ajout(liste):
-    a = input("qui? :")
-    b = input("quelle nage? :")
-    c = input("combien de longueur ? :")
-    t = (a,b,c)
-    liste.append(t)
+    """Ajoute un évènement à la liste"""
+    a = input("Qui nage ? ")
+    b = input("quelle nage ? ")
+    c = input("combien de longueur ? ")
+    liste.append((a,b,c))
+
 def cmd_liste(liste):
-    print("Prénom     |  Nage    |  Longueur")
+    """Affiche toutes les performances des nageurs"""
+    print("Prénom      |  nage   |  longueur")
     print("---------------------------------")
     for elt in liste:
-        print(f"{elt[0]:11}|  {elt[1]:8}|  {elt[2]}")
-def cmd_exit():
-    tmp = input("En êtes-vous sûr ? (o)oui / (n) non :")
-    if tmp == "o":
+        print(f" {elt[0]:11}| {elt[1]:8}|  {elt[2]}")
+
+def cmd_nageur(liste):
+    """Affiche toutes les performances d'un nageur"""
+    tmp = input("Quel nageur ? ")
+    print("Performances de ", tmp)
+    print("  nage   |  longueur")
+    print("--------------------")
+    for elt in liste:
+        if elt[0]== tmp:
+            print(f" {elt[1]:8}|  {elt[2]}")
+
+def cmd_nage(liste):
+    """Affiche toutes les performances suivant une nage donnée"""
+    tmp = input("Quel nage ? ")
+    print("Nage ", tmp)
+    print(" Nageur     |  longueur")
+    print("------------------------")
+    for elt in liste:
+        if elt[1]== tmp:
+            print(f" {elt[0]:11}|  {elt[2]}")
+
+def cmd_exit(liste):
+    tmp = input("En êtes-vous sûr ? (o)ui/(n)on ")
+    if tmp == 'o':
+        cmd_save(liste, 'save.backup')
         return False
     else:
         return True
-def cmd_nageur(liste):
-    nageur = input("Qui ? :")
-    print("Nages de ",nageur, ":")
-    print("----------------------")
-    for elt in liste:
-        if elt[0] == nageur:
-            print(f"{elt[1]:8}|  {elt[2]}")
-def cmd_nage(liste):
-    nage = input("Quel nage ? :")
-    print(nage, ":")
-    print("Prénom     |  Longueur")
-    print("----------------------")
-    for elt in liste:
-         if elt[1] == nage:
-            print(f"{elt[0]:11}|  {elt[2]}")
+
 def cmd_save(liste, filename):
-    fichier = open("save.csv","w")
+    '''sauvegarde la BDD'''
+    fichier = open(filename, 'w')
     for elt in liste:
         fichier.write(elt[0]+','+elt[1]+','+str(elt[2])+"\n")
     fichier.close()
+
 def cmd_load(liste, filename):
-    fichier = open('save.csv', 'r')
+    'charge la BDD'
+    fichier = open(filename, 'r')
     for line in fichier:
         line.strip()
         if line[-1] == '\n':
@@ -49,29 +62,39 @@ def cmd_load(liste, filename):
         tmp = line.split(',')
         liste.append(tuple(tmp))
     fichier.close()
-exit = True
-while exit:
-    cmd = input("que faut t-il faire ?(ajout,liste,nageur,nage,save,load ou exit) :")
-    if cmd == "ajout":
+
+
+
+isAlive = True
+while isAlive:
+    commande = input("Que faut-il faire ? ")
+
+    if commande == 'ajout':
         cmd_ajout(liste)
         continue
-    if cmd == "liste":
+   
+    if commande == 'liste':
         cmd_liste(liste)
         continue
-    if cmd == "nageur":
+
+    if commande == 'nageur':
         cmd_nageur(liste)
         continue
-    if cmd == "nage":
+
+    if commande == 'nage':
         cmd_nage(liste)
         continue
-    if cmd == "save":
-        cmd_save(liste, "save.csv")
+
+    if commande == 'save':
+        cmd_save(liste, 'save.csv')
         continue
-    if cmd == "load":
-        cmd_load(liste, "save.csv")
+
+    if commande == 'load':
+        cmd_load(liste, 'save.csv')
         continue
-    if cmd == "exit":
-        exit = cmd_exit()
+
+    if commande == 'exit':
+        isAlive = cmd_exit(liste)
         continue
-    else:
-        print(f"Commande {cmd} inconnue")
+
+    print(f"Commande {commande} inconnue")
